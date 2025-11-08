@@ -4,9 +4,10 @@ from homeassistant.core import callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers import entity_platform
 from homeassistant.const import STATE_UNAVAILABLE
-
+import logging
 from .const import DOMAIN, CONF_DEVICE_ID, CONF_MODEL_ID
 from .api import NotificationsManager
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     data = hass.data[DOMAIN][entry.entry_id]
@@ -50,6 +51,7 @@ class InstantPotStateSensor(SensorEntity):
             return None
         cap = None
         if self._state:
+            _LOGGER.info(self._state)
             cap = (self._state.get("capability") or {}).get("name")
             dev_state = self._state.get("device_state")
             # Prefer capability name if present, else device_state suffix

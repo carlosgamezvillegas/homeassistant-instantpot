@@ -182,7 +182,7 @@ class KitchenOSClient:
             _LOGGER.debug("GET %s with AccessToken", url)
             async with self._session.get(url, headers=headers) as resp:
                 text = await resp.text()
-                _LOGGER.debug("GET %s -> %s %s\n%s", url, resp.status, resp.reason, text[:1000])
+                _LOGGER.info("GET %s -> %s %s\n%s", url, resp.status, resp.reason, text[:1000])
                 return resp.status, resp.reason, text
 
         status, reason, text = await _once(access)
@@ -314,6 +314,7 @@ class NotificationsManager:
         return _remove
 
     def get_state(self, device_id: str) -> dict | None:
+        _LOGGER.info(self._states.get(device_id))
         return self._states.get(device_id)
 
     def is_available(self, device_id: str) -> bool:
